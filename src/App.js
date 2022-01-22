@@ -1,39 +1,16 @@
+import * as React from 'react';
 import './App.css';
-import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { Copyright } from './Copyright';
+import ReviewCard from './components/ReviewCard';
 
 function App() {
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-      }}
-    >
-      <CssBaseline />
-      <Container component="main" sx={{ mt: 8, mb: 2 }} maxWidth="sm">
-        TEXT
-      </Container>
-      <Box
-        component="footer"
-        sx={{
-          py: 3,
-          px: 2,
-          mt: 'auto',
-          backgroundColor: (theme) =>
-            theme.palette.mode === 'light'
-              ? theme.palette.grey[200]
-              : theme.palette.grey[800],
-        }}
-      >
-        <Container maxWidth="sm">
-          <Copyright />
-        </Container>
+    <Container maxWidth="xs">
+      <Box mt={5}>
+        <ReviewCard />
       </Box>
-    </Box>
+    </Container>
   );
 }
 
