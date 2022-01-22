@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { likeOn, likeOff } from '../redux/actions';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -9,7 +11,7 @@ import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
+import { red, grey } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -28,9 +30,19 @@ const ExpandMore = styled((props) => {
 
 export default function RecipeReviewCard() {
   const [expanded, setExpanded] = React.useState(false);
+  const dispatch = useDispatch();
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const likeState = useSelector((state) => {
+    const { likeReducer } = state;
+    return likeReducer.like;
+  });
+
+  const handleClickFavorite = () => {
+    likeState ? dispatch(likeOff()) : dispatch(likeOn());
   };
 
   return (
@@ -63,7 +75,11 @@ export default function RecipeReviewCard() {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
+        <IconButton
+          sx={{ color: likeState ? red[500] : grey[500] }}
+          onClick={handleClickFavorite}
+          aria-label="add to favorites"
+        >
           <FavoriteIcon />
         </IconButton>
         <IconButton aria-label="share">
