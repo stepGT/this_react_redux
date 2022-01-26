@@ -16,6 +16,19 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import Stack from '@mui/material/Stack';
+import Slider from '@mui/material/Slider';
+import VolumeDown from '@mui/icons-material/VolumeDown';
+import VolumeUp from '@mui/icons-material/VolumeUp';
+import FormGroup from '@mui/material/FormGroup';
+import Switch from '@mui/material/Switch';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -28,9 +41,30 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 export default function RecipeReviewCard() {
   const [expanded, setExpanded] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const dispatch = useDispatch();
+
+  const [value, setValue] = React.useState(30);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -54,9 +88,73 @@ export default function RecipeReviewCard() {
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+          <>
+            <IconButton onClick={handleOpen} aria-label="settings">
+              <MoreVertIcon />
+            </IconButton>
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  <Stack
+                    direction="row"
+                    sx={{ mb: 2 }}
+                    alignItems="center"
+                  >
+                    <SettingsIcon />
+                    Settings
+                  </Stack>
+                </Typography>
+                <FormControl>
+                  <RadioGroup
+                    aria-labelledby="demo-radio-buttons-group-label"
+                    defaultValue="On"
+                    name="radio-buttons-group"
+                  >
+                    <FormControlLabel
+                      value="On"
+                      control={<Radio />}
+                      label="On"
+                    />
+                    <FormControlLabel
+                      value="Off"
+                      control={<Radio />}
+                      label="Off"
+                    />
+                  </RadioGroup>
+                </FormControl>
+                <Stack
+                  spacing={3}
+                  direction="row"
+                  sx={{ mb: 1 }}
+                  alignItems="center"
+                >
+                  <VolumeDown />
+                  <Slider
+                    aria-label="Volume"
+                    value={value}
+                    onChange={handleChange}
+                  />
+                  <VolumeUp />
+                </Stack>
+                <FormGroup>
+                  <FormControlLabel
+                    control={<Switch defaultChecked />}
+                    label="Label"
+                  />
+                  <FormControlLabel
+                    disabled
+                    control={<Switch />}
+                    label="Disabled"
+                  />
+                </FormGroup>
+              </Box>
+            </Modal>
+          </>
         }
         title="React Redux"
         subheader="September 1, 2015"
